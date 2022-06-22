@@ -6,6 +6,8 @@ const images = {
   cross: require("./images/cross.svg").default,
   plus: require("./images/plus.svg").default,
   ten_plus: require("./images/10-plus.svg").default,
+  thunderbolt: require("./images/thunderbolt.svg").default,
+  downChevron: require("./images/down-chevron.svg").default,
 
   trash: require("./images/trash.png"),
 };
@@ -17,6 +19,7 @@ export default function App() {
         <GroupBlock />
         <ConditionsBlock />
         <ConditionEditBlock />
+        <AddConditionList />
       </div>
     </div>
   );
@@ -341,5 +344,78 @@ function PlusButton({ txt, border, style }) {
       />
       {txt}
     </button>
+  );
+}
+
+const Profiles = {
+  Customer: ["numberOfTxns", "SlabName", "firstname"],
+  Transaction: ["value", "totalQty", "date", "basketIncludes"],
+};
+
+function AddConditionList() {
+  return (
+    <div
+      style={{
+        position: "fixed",
+        backgroundColor: "white",
+        top: "50vh",
+        left: "50vw",
+        transform: "translate(-50%,-50%)",
+        boxShadow: "0 2px 5px #22223344",
+        minWidth: "15rem",
+      }}
+    >
+      {Object.entries(Profiles).map(([k, v]) => {
+        return (
+          <div
+            key={k}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              padding: "0.5rem",
+              fontSize: "0.9rem",
+            }}
+          >
+            <svg
+              width="50"
+              height="50"
+              version="1.1"
+              viewBox="0 0 13.229 13.229"
+              style={{
+                width: "1rem",
+                height: "1rem",
+                marginRight: "0.5rem",
+                backgroundColor: "var(--gray)",
+                padding: "0.3rem",
+                boxSizing: "content-box",
+                maskImage: "url(./squicircle.svg)",
+                maskPosition: "center",
+                maskSize: "contain",
+
+                webkitMaskImage: "url(./squicircle.svg)",
+                webkitMaskPosition: "center",
+                webkitMaskSize: "contain",
+              }}
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g transform="matrix(.13464 0 0 .13464 -8.4474 -11.423)">
+                <path
+                  d="m83.85 134.38 36.711-46.884c0.60326-0.77044 4.0596-1.0332 3.6481 1.2114l-6.1077 33.321 19.105-0.1748c2.1154-0.0194 4.7246 0.73647 2.9656 3.3727l-36.012 53.972c-1.3432 2.0131-4.8985 2.9921-4.2699-0.62952l7.0362-40.538-21.616-0.30317c-1.2172-0.0171-3.621-0.58789-1.4603-3.3473z"
+                  fill="none"
+                  stroke="#21252b"
+                  stroke-width="8"
+                />
+              </g>
+            </svg>
+            <span>{k}</span>
+            <img
+              src={images.downChevron}
+              alt=""
+              style={{ height: "0.4rem", marginLeft: "auto" }}
+            />
+          </div>
+        );
+      })}
+    </div>
   );
 }

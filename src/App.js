@@ -99,13 +99,15 @@ function ConditionsBlock({
                   }}
                 />
               </div>
-              <div style={{ fontSize: "0.9rem" }}>{x[1]}</div>
+              <div style={{ fontSize: "0.9rem", whiteSpace: "nowrap" }}>
+                {x[1]}
+              </div>
             </li>
           );
         })}
       </ul>
       <PlusButton
-        txt="When"
+        txt="Condition"
         border={true}
         style={{
           marginTop: "0.5rem",
@@ -253,7 +255,7 @@ function ConditionEditBlock() {
           style={{
             border: "1.5px solid #000000dd",
             borderRadius: "3px",
-            overflow: 'hidden',
+            overflow: "hidden",
             display: "flex",
             alignItems: "center",
             fontSize: "0.85rem",
@@ -288,10 +290,15 @@ function ConditionEditBlock() {
               height: "0.75rem",
               marginLeft: "auto",
               marginRight: "1rem",
+              cursor: "pointer",
             }}
           />
         </div>
-        <PlusButton txt="Add action" style={{ marginTop: "0.5rem" }} />
+        <PlusButton
+          txt="Add action"
+          border={true}
+          style={{ marginTop: "1rem" }}
+        />
         <PlusButton
           txt="When"
           border={true}
@@ -319,6 +326,7 @@ function PlusButton({ txt, border, style }) {
         padding: "0.3rem 0.5rem",
         borderRadius: "5px",
         border: border ? "1.5px solid var(--blue)" : "",
+        backgroundColor: !border ? "#eeeeffaa" : "white",
         ...style,
       }}
     >
@@ -328,7 +336,7 @@ function PlusButton({ txt, border, style }) {
           width: "0.7rem",
           height: "0.7rem",
           marginRight: "0.4rem",
-          transform: "translate(0,-0.01rem)",
+          // transform: "translate(0,-0.01rem)",
         }}
       />
       {txt}

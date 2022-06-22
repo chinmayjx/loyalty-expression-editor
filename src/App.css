@@ -5,11 +5,14 @@
 }
 
 html {
-  width: 100vw;
-  height: 100vh;
+  min-width: 100vw;
+  min-height: 100vh;
 }
 
 body {
+  padding: 1rem;
+  width: fit-content;
+  height: fit-content;
 }
 
 ul {
@@ -45,12 +48,12 @@ svg {
 
 .main {
   --blue: #2464e8;
-  --bg-blue: #eaf0fe;
+  --bg-blue: #eeeeffaa;
   --txt-blue: #5984e2;
   --bg-red: #f9d8d8;
   --bg-gray: #fafbfd;
-  --gray: hsl(200, 11%, 93%);
-  --font-color: hsl(218, 13%, 15%);
+  --gray: hsla(210, 30%, 78%, 0.24);
+  --font-color: #21252b;
 
   --w1: 100;
   --w6: 600;
@@ -101,4 +104,5 @@ svg {
 .gray-select-btn[data-selected="false"] {
   background-color: white;
   border: 1px solid var(--font-color);
+  padding: calc(0.175rem - 2px) 0.75rem;
 }

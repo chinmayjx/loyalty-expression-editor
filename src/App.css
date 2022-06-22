@@ -22,13 +22,35 @@ li {
   cursor: pointer;
 }
 
+button,
+input,
+textarea {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+div,
+input,
+textarea,
+button,
+select,
+a,
+svg {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
 .main {
   --blue: #2464e8;
   --bg-blue: #eaf0fe;
   --txt-blue: #5984e2;
   --bg-red: #f9d8d8;
   --bg-gray: #fafbfd;
-  --font-color: #373d47;
+  --gray: hsl(200, 11%, 93%);
+  --font-color: hsl(218, 13%, 15%);
 
   --w1: 100;
   --w6: 600;
@@ -60,6 +82,23 @@ li {
   border-bottom: var(--border-1);
 }
 
+.main-flex-item {
+  position: relative;
+}
+
 .main-flex-item ~ .main-flex-item {
   border-left: var(--border-1);
+}
+
+.gray-select-btn {
+  padding: 0.175rem 0.75rem;
+  background-color: var(--gray);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: var(--w6);
+}
+
+.gray-select-btn[data-selected="false"] {
+  background-color: white;
+  border: 1px solid var(--font-color);
 }

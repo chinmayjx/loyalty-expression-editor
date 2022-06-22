@@ -5,6 +5,7 @@ import { Plus } from "./Svg";
 const images = {
   cross: require("./images/cross.svg").default,
   plus: require("./images/plus.svg").default,
+  ten_plus: require("./images/10-plus.svg").default,
 
   trash: require("./images/trash.png"),
 };
@@ -152,10 +153,10 @@ function ConditionEditBlock() {
             borderTop: "var(--border-1)",
             borderRight: "var(--border-1)",
             borderBottom: "var(--border-1)",
-            borderLeft: "3px solid var(--blue)",
+            borderLeft: "4px solid var(--blue)",
             borderRadius: "3px",
             padding: "1rem",
-            width: "40rem",
+            minWidth: "40rem",
             position: "relative",
           }}
         >
@@ -229,7 +230,7 @@ function ConditionEditBlock() {
             style={{ width: "0.75rem", marginLeft: "auto", cursor: "pointer" }}
           />
         </div>
-        <div style={{ fontSize: "0.85rem" }}>
+        <div style={{ fontSize: "0.85rem", margin: "1rem 0" }}>
           Expression is{" "}
           <span
             className="gray-select-btn"
@@ -247,6 +248,48 @@ function ConditionEditBlock() {
           >
             False
           </span>
+        </div>
+        <div
+          style={{
+            border: "1.5px solid #000000dd",
+            borderRadius: "3px",
+            overflow: 'hidden',
+            display: "flex",
+            alignItems: "center",
+            fontSize: "0.85rem",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              padding: "0.5rem 1rem",
+              backgroundColor: "var(--gray)",
+              fontWeight: "var(--w6)",
+            }}
+          >
+            <img
+              src={images.ten_plus}
+              style={{
+                width: "1.3rem",
+                height: "1.3rem",
+                marginRight: "0.5rem",
+              }}
+              alt=""
+            />
+            Allocate Points
+          </div>
+          <span style={{ marginLeft: "0.75rem" }}>100% Points Allocation</span>
+          <img
+            src={images.cross}
+            alt=""
+            style={{
+              width: "0.75rem",
+              height: "0.75rem",
+              marginLeft: "auto",
+              marginRight: "1rem",
+            }}
+          />
         </div>
         <PlusButton txt="Add action" style={{ marginTop: "0.5rem" }} />
         <PlusButton

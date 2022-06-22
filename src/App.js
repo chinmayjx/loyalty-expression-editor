@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { Plus } from "./Svg";
 
@@ -10,6 +10,7 @@ const images = {
   downChevron: require("./images/down-chevron.svg").default,
 
   trash: require("./images/trash.png"),
+  info: require("./images/info.png"),
 };
 
 export default function App() {
@@ -19,7 +20,6 @@ export default function App() {
         <GroupBlock />
         <ConditionsBlock />
         <ConditionEditBlock />
-        <AddConditionList />
       </div>
     </div>
   );
@@ -134,6 +134,7 @@ const anchoredStyle = {
 
 function ConditionEditBlock() {
   const [whenExpressionIs, setWhenExpressionIs] = useState(true);
+  const [addCondition, setAddCondition] = useState(false);
   return (
     <div className="main-flex-item">
       <div className="block-title-box">Condition 1</div>
@@ -214,7 +215,22 @@ function ConditionEditBlock() {
               cursor: "pointer",
             }}
           />
-          <PlusButton txt={"Add condition"} />
+          <PlusButton
+            style={{ position: "relative" }}
+            txt={"Add condition"}
+            onClick={(e) => {
+              if (e.target.tagName === "BUTTON") setAddCondition(true);
+            }}
+          >
+            {addCondition && (
+              <AddConditionList
+                hideSelf={() => {
+                  setAddCondition(false);
+                  console.log(addCondition);
+                }}
+              />
+            )}
+          </PlusButton>
         </div>
         <div
           style={{
@@ -317,9 +333,10 @@ function ConditionEditBlock() {
   );
 }
 
-function PlusButton({ txt, border, style }) {
+function PlusButton({ txt, border, style, children, onClick }) {
   return (
     <button
+      onClick={onClick}
       style={{
         display: "flex",
         alignItems: "center",
@@ -343,79 +360,164 @@ function PlusButton({ txt, border, style }) {
         }}
       />
       {txt}
+      {children}
     </button>
   );
 }
 
 const Profiles = {
-  Customer: ["numberOfTxns", "SlabName", "firstname"],
-  Transaction: ["value", "totalQty", "date", "basketIncludes"],
+  Customer: {
+    attributes: [
+      { name: "numberOfTxns", help: "Help Text" },
+      { name: "SlabName", help: "Help Text" },
+      { name: "firstname", help: "Help Text" },
+    ],
+  },
+  Transaction: {
+    attributes: [
+      { name: "value", help: "Help Text" },
+      { name: "totalQty", help: "Help Text" },
+      { name: "date", help: "Help Text" },
+      { name: "basketIncludes", help: "Help Text" },
+    ],
+  },
 };
 
-function AddConditionList() {
+function AddConditionList({ hideSelf }) {
+  const [selected, setSelected] = useState();
+  return (
+    <>
+      <div
+        className="cover-all-screen"
+        style={{
+          // backgroundColor: "#00000044",
+          zIndex: "1",
+        }}
+        onClick={(e) => hideSelf()}
+      ></div>
+      <div
+        style={{
+          position: "absolute",
+          color: "var(--font-color)",
+          backgroundColor: "white",
+          top: "0",
+          left: "calc(100% + 0.5rem)",
+          borderRadius: "7px",
+          overflow: "hidden",
+          // transform: "translate(-50%,0)",
+          boxShadow: "0 2px 5px #22223344",
+          minWidth: "15rem",
+          zIndex: "2",
+        }}
+      >
+        {Object.entries(Profiles).map(([k, v]) => {
+          let subLI = <></>;
+          if (selected === k) {
+            subLI = v.attributes.map((x, i) => {
+              return (
+                <div
+                  key={i}
+                  className="add-condition-sub-li"
+                  style={{
+                    padding: "0.4rem 0.75rem 0.4rem 2.9rem",
+                    fontSize: "0.88rem",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {x.name}
+                  <img
+                    src={images.info}
+                    alt=""
+                    style={{
+                      marginLeft: "auto",
+                      width: "0.8rem",
+                    }}
+                  />
+                </div>
+              );
+            });
+          }
+          return (
+            <React.Fragment key={k}>
+              <AddConditionLI
+                txt={k}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              {subLI}
+            </React.Fragment>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
+function AddConditionLI({ txt, selected, setSelected }) {
+  let active = selected === txt;
   return (
     <div
+      className="add-condition-li"
+      data-active={active ? "true" : "false"}
       style={{
-        position: "fixed",
-        backgroundColor: "white",
-        top: "50vh",
-        left: "50vw",
-        transform: "translate(-50%,-50%)",
-        boxShadow: "0 2px 5px #22223344",
-        minWidth: "15rem",
+        display: "flex",
+        alignItems: "center",
+        padding: "0.5rem 0.75rem 0.5rem 0.5rem",
+        fontSize: "0.9rem",
+        fontWeight: "var(--w6)",
+        borderLeft: "2.5px solid white",
+      }}
+      onClick={(e) => {
+        if (active) setSelected("");
+        else setSelected(txt);
       }}
     >
-      {Object.entries(Profiles).map(([k, v]) => {
-        return (
-          <div
-            key={k}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              padding: "0.5rem",
-              fontSize: "0.9rem",
-            }}
-          >
-            <svg
-              width="50"
-              height="50"
-              version="1.1"
-              viewBox="0 0 13.229 13.229"
-              style={{
-                width: "1rem",
-                height: "1rem",
-                marginRight: "0.5rem",
-                backgroundColor: "var(--gray)",
-                padding: "0.3rem",
-                boxSizing: "content-box",
-                maskImage: "url(./squicircle.svg)",
-                maskPosition: "center",
-                maskSize: "contain",
+      <svg
+        width="50"
+        height="50"
+        version="1.1"
+        viewBox="0 0 13.229 13.229"
+        style={{
+          width: "1rem",
+          height: "1rem",
+          marginRight: "0.6rem",
+          backgroundColor: "var(--gray)",
+          padding: "0.3rem",
+          boxSizing: "content-box",
+          stroke: "var(--font-color)",
 
-                webkitMaskImage: "url(./squicircle.svg)",
-                webkitMaskPosition: "center",
-                webkitMaskSize: "contain",
-              }}
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g transform="matrix(.13464 0 0 .13464 -8.4474 -11.423)">
-                <path
-                  d="m83.85 134.38 36.711-46.884c0.60326-0.77044 4.0596-1.0332 3.6481 1.2114l-6.1077 33.321 19.105-0.1748c2.1154-0.0194 4.7246 0.73647 2.9656 3.3727l-36.012 53.972c-1.3432 2.0131-4.8985 2.9921-4.2699-0.62952l7.0362-40.538-21.616-0.30317c-1.2172-0.0171-3.621-0.58789-1.4603-3.3473z"
-                  fill="none"
-                  stroke="#21252b"
-                  stroke-width="8"
-                />
-              </g>
-            </svg>
-            <span>{k}</span>
-            <img
-              src={images.downChevron}
-              alt=""
-              style={{ height: "0.4rem", marginLeft: "auto" }}
-            />
-          </div>
-        );
-      })}
+          maskImage: "url(./squicircle.svg)",
+          maskPosition: "center",
+          maskSize: "contain",
+          maskRepeat: "no-repeat",
+
+          WebkitMaskImage: "url(./squicircle.svg)",
+          WebkitMaskPosition: "center",
+          WebkitMaskSize: "contain",
+          WebkitMaskRepeat: "no-repeat",
+        }}
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g transform="matrix(.13464 0 0 .13464 -8.4474 -11.423)">
+          <path
+            d="m83.85 134.38 36.711-46.884c0.60326-0.77044 4.0596-1.0332 3.6481 1.2114l-6.1077 33.321 19.105-0.1748c2.1154-0.0194 4.7246 0.73647 2.9656 3.3727l-36.012 53.972c-1.3432 2.0131-4.8985 2.9921-4.2699-0.62952l7.0362-40.538-21.616-0.30317c-1.2172-0.0171-3.621-0.58789-1.4603-3.3473z"
+            fill="none"
+            strokeWidth="8"
+          />
+        </g>
+      </svg>
+      <span>{txt}</span>
+      <img
+        src={images.downChevron}
+        alt=""
+        style={{
+          height: "0.4rem",
+          marginLeft: "auto",
+          transform: active ? "rotate(180deg)" : "",
+          // transition: "transform 0.2s linear",
+        }}
+      />
     </div>
   );
 }

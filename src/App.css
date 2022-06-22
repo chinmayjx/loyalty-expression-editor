@@ -111,3 +111,28 @@ svg {
   border: 1px solid var(--font-color);
   padding: calc(0.175rem - 2px) 0.75rem;
 }
+
+.add-condition-li:hover,
+.add-condition-li[data-active="true"] {
+  background-color: var(--bg-blue);
+  color: var(--blue);
+  border-left: 2.5px solid var(--blue) !important;
+}
+
+.add-condition-sub-li:hover{
+  background-color: #fdfbdd85;
+}
+
+.add-condition-li:hover > svg,
+.add-condition-li[data-active="true"] > svg {
+  stroke: white !important;
+  background-color: var(--blue) !important;
+}
+
+.cover-all-screen {
+  position: fixed;
+  width: 500vw;
+  height: 500vh;
+  top: 0;
+  left: 0;
+}

@@ -79,7 +79,6 @@ svg {
   flex-direction: row;
   border: var(--border-1);
   border-radius: 5px;
-  overflow: hidden;
 }
 
 .block-title-box {
@@ -119,7 +118,7 @@ svg {
   border-left: 2.5px solid var(--blue) !important;
 }
 
-.add-condition-sub-li:hover{
+.add-condition-sub-li:hover {
   background-color: #fdfbdd85;
 }
 
@@ -135,4 +134,11 @@ svg {
   height: 500vh;
   top: 0;
   left: 0;
+}
+
+::-webkit-input-placeholder {
+  
+}
+::-moz-placeholder {
+  
 }

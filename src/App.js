@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Plus } from "./Svg";
 
@@ -11,6 +11,7 @@ const images = {
 
   trash: require("./images/trash.png"),
   info: require("./images/info.png"),
+  search: require("./images/search.png"),
 };
 
 export default function App() {
@@ -226,7 +227,6 @@ function ConditionEditBlock() {
               <AddConditionList
                 hideSelf={() => {
                   setAddCondition(false);
-                  console.log(addCondition);
                 }}
               />
             )}
@@ -238,7 +238,7 @@ function ConditionEditBlock() {
             backgroundColor: "var(--gray)",
             padding: "0.35rem 1rem",
             fontSize: "0.9rem",
-            margin: "1rem 0",
+            margin: "1rem 0 0.8rem 0",
             display: "flex",
             alignItems: "center",
             borderRadius: "3px",
@@ -251,24 +251,24 @@ function ConditionEditBlock() {
             style={{ width: "0.75rem", marginLeft: "auto", cursor: "pointer" }}
           />
         </div>
-        <div style={{ fontSize: "0.85rem", margin: "1rem 0" }}>
+        <div style={{ fontSize: "0.85rem", margin: "0.8rem 0" }}>
           Expression is{" "}
-          <span
+          <button
             className="gray-select-btn"
             data-selected={whenExpressionIs ? "true" : "false"}
             style={{ marginLeft: "0.25rem" }}
             onClick={(e) => setWhenExpressionIs(!whenExpressionIs)}
           >
             True
-          </span>
-          <span
+          </button>
+          <button
             className="gray-select-btn"
             data-selected={!whenExpressionIs ? "true" : "false"}
             style={{ marginLeft: "0.35rem" }}
             onClick={(e) => setWhenExpressionIs(!whenExpressionIs)}
           >
             False
-          </span>
+          </button>
         </div>
         <div
           style={{
@@ -385,6 +385,28 @@ const Profiles = {
 
 function AddConditionList({ hideSelf }) {
   const [selected, setSelected] = useState();
+  const [searchTxt, setSearchTxt] = useState("");
+  const [data, setData] = useState(Profiles);
+  useEffect(() => {
+    if (searchTxt) {
+      let tmp = {};
+      Object.entries(Profiles).forEach(([k, v]) => {
+        if (k.toLowerCase().includes(searchTxt.toLowerCase())) {
+          tmp[k] = v;
+          return;
+        }
+        let tmpl = v.attributes.filter((x) =>
+          x.name.toLowerCase().includes(searchTxt.toLowerCase())
+        );
+        if (tmpl.length > 0) {
+          tmp[k] = { ...v, attributes: tmpl };
+        }
+      });
+      setData(tmp);
+    } else {
+      setData(Profiles);
+    }
+  }, [searchTxt]);
   return (
     <>
       <div
@@ -400,7 +422,7 @@ function AddConditionList({ hideSelf }) {
           position: "absolute",
           color: "var(--font-color)",
           backgroundColor: "white",
-          top: "0",
+          top: "0rem", //-2.75
           left: "calc(100% + 0.5rem)",
           borderRadius: "7px",
           overflow: "hidden",
@@ -410,9 +432,35 @@ function AddConditionList({ hideSelf }) {
           zIndex: "2",
         }}
       >
-        {Object.entries(Profiles).map(([k, v]) => {
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            height: "2.5rem",
+            borderBottom: "var(--border-1)",
+          }}
+        >
+          <img
+            src={images.search}
+            alt=""
+            style={{
+              width: "1rem",
+              marginLeft: "0.95rem",
+              marginRight: "0.85rem",
+            }}
+          />
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchTxt}
+            onChange={(e) => {
+              setSearchTxt(e.target.value);
+            }}
+          />
+        </div>
+        {Object.entries(data).map(([k, v]) => {
           let subLI = <></>;
-          if (selected === k) {
+          if (searchTxt || selected === k) {
             subLI = v.attributes.map((x, i) => {
               return (
                 <div
@@ -442,8 +490,10 @@ function AddConditionList({ hideSelf }) {
             <React.Fragment key={k}>
               <AddConditionLI
                 txt={k}
+                active={searchTxt || selected === k}
                 selected={selected}
                 setSelected={setSelected}
+                searchTxt={searchTxt}
               />
               {subLI}
             </React.Fragment>
@@ -454,8 +504,7 @@ function AddConditionList({ hideSelf }) {
   );
 }
 
-function AddConditionLI({ txt, selected, setSelected }) {
-  let active = selected === txt;
+function AddConditionLI({ txt, active, selected, setSelected, searchTxt }) {
   return (
     <div
       className="add-condition-li"
@@ -508,16 +557,18 @@ function AddConditionLI({ txt, selected, setSelected }) {
         </g>
       </svg>
       <span>{txt}</span>
-      <img
-        src={images.downChevron}
-        alt=""
-        style={{
-          height: "0.4rem",
-          marginLeft: "auto",
-          transform: active ? "rotate(180deg)" : "",
-          // transition: "transform 0.2s linear",
-        }}
-      />
+      {!searchTxt && (
+        <img
+          src={images.downChevron}
+          alt=""
+          style={{
+            height: "0.4rem",
+            marginLeft: "auto",
+            transform: active ? "rotate(180deg)" : "",
+            // transition: "transform 0.2s linear",
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -21,6 +21,14 @@ export default function App() {
         <GroupBlock />
         <ConditionsBlock />
         <ConditionEditBlock />
+        <div
+          style={{
+            marginTop: "3rem",
+            border: "var(--border-1)",
+            borderRadius: "5px",
+            padding: "1rem",
+          }}
+        ></div>
       </div>
     </div>
   );

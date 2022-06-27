@@ -21,6 +21,7 @@ export default function App() {
         <GroupBlock />
         <ConditionsBlock />
         <ConditionEditBlock />
+        </div>
         <div
           style={{
             marginTop: "3rem",
@@ -29,7 +30,6 @@ export default function App() {
             padding: "1rem",
           }}
         ></div>
-      </div>
     </div>
   );
 }
